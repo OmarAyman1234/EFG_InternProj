@@ -11,7 +11,7 @@ namespace OrderAPI.Controllers
     public class OrdersController : ControllerBase
     {
         // GET: api/Orders
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<OrderDto>> Get()
         {

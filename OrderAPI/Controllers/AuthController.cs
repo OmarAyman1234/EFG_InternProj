@@ -56,12 +56,12 @@ namespace OrderAPI.Controllers
         }
 
         [HttpPost("refresh")]
-        public ActionResult Refresh()
+        public ActionResult<string> Refresh()
         {
             try
             {
-                _authServices.Refresh();
-                return Ok();
+                string newAccessToken = _authServices.Refresh();
+                return Ok(newAccessToken);
             }
             catch (Exception ex)
             {

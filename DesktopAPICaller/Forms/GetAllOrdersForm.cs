@@ -21,13 +21,32 @@ namespace DesktopAPICaller.Forms
         {
             try
             {
-                _httpClient.DefaultRequestHeaders.Remove("X-Username");
                 _httpClient.DefaultRequestHeaders.Add("X-Username", Session.Username);
                 _httpClient.DefaultRequestHeaders.Authorization =
                     new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Session.Token);
 
                 var response = await _httpClient.GetAsync("https://localhost:7089/api/Orders");
-                response.EnsureSuccessStatusCode();
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    // unauthorized:
+
+                    //try refresh
+                    var refreshResponse = await _httpClient.PostAsync("https://localhost:7089/Auth/refresh", null);
+                    string newAccessToken = await refreshResponse.Content.ReadAsStringAsync();
+
+                    // add the access token after refresh
+                    _httpClient.DefaultRequestHeaders.Authorization =
+                        new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", newAccessToken);
+
+                    Session.Token = newAccessToken;
+
+                    // retry fetching after refresh
+                    response = await _httpClient.GetAsync("https://localhost:7089/api/Orders");
+
+                    if (!response.IsSuccessStatusCode)
+                        throw new Exception("You need to login!");
+                }
 
                 var json = await response.Content.ReadAsStringAsync();
                 var orders = JsonSerializer.Deserialize<List<OrderDto>>(json, new JsonSerializerOptions
@@ -49,6 +68,7 @@ namespace DesktopAPICaller.Forms
                 });
 
                 await _hubConnection.StartAsync();
+
             }
             catch (Exception ex)
             {

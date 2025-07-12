@@ -40,6 +40,7 @@ namespace OrderAPI.Data.Repositories
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
             context.SaveChanges();
 
+
             return accessToken;
         }
         public bool RegisterUser(RegisterRequest rr)
@@ -69,6 +70,7 @@ namespace OrderAPI.Data.Repositories
             {
                 var claims = new[] { new Claim(ClaimTypes.Name, Session.Username) };
                 string accessToken = _tokenService.GenerateAccessToken(claims);
+                Session.Token = accessToken;
                 return accessToken;
             }
             else
