@@ -38,6 +38,9 @@ namespace OrderAPI.Data.Repositories
 
             user.RefreshToken = refreshToken;
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(7);
+
+            Session.Username = lr.Username;
+
             context.SaveChanges();
 
 
