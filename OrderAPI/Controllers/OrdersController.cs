@@ -10,14 +10,22 @@ namespace OrderAPI.Controllers
     [ApiController]
     public class OrdersController : ControllerBase
     {
+        private readonly OrderServices _orderServices;
+
+        public OrdersController(OrderServices orderServices)
+        {
+            _orderServices = orderServices;
+        }
+
+
         // GET: api/Orders
         [Authorize]
         [HttpGet]
-        public ActionResult<IEnumerable<OrderDto>> Get()
+        public async Task<ActionResult<IEnumerable<OrderDto>>> Get()
         {
             try
             {
-                var orders = OrderServices.GetOrders();
+                var orders = await _orderServices.GetOrders();
                 return Ok(orders);
             }
             catch (Exception ex) 
@@ -32,7 +40,7 @@ namespace OrderAPI.Controllers
         [HttpGet("{id}")]
         public ActionResult<OrderDto> Get(int id)
         {
-            var order = OrderServices.GetOrderById(id);
+            var order = _orderServices.GetOrderById(id);
             if (order != null)
             {
                 return Ok(order);
@@ -48,7 +56,7 @@ namespace OrderAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var newOrder = OrderServices.CreateOrder(order);
+            var newOrder = _orderServices.CreateOrder(order);
             if(newOrder != null)
             {
                 await RabbitMQProducer.Send(newOrder, "post.orders");
@@ -65,9 +73,9 @@ namespace OrderAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (OrderServices.EditOrder(id, order) != null)
+            if (_orderServices.EditOrder(id, order) != null)
             {
-                return Ok(OrderServices.GetOrderById(id));
+                return Ok(_orderServices.GetOrderById(id));
             }
 
             return NotFound($"Order with id {id} not found");
@@ -77,7 +85,7 @@ namespace OrderAPI.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete(int id)
         {
-            if (OrderServices.DeleteOrder(id) == true)
+            if (_orderServices.DeleteOrder(id) == true)
             {
                 return Ok();
             }
