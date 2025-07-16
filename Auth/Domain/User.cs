@@ -3,11 +3,11 @@
     public class User
     {
         public User() { }
-        public User(string username, string email, string password)
+        public User(string username, string email, string passwordHash)
         {
             UserName = username;
             Email = email;
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(password);
+            PasswordHash = passwordHash;
         }
 
         public int Id { get; set; }
