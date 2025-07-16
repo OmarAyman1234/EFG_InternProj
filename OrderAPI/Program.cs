@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using OrderAPI.Data.Context;
 using OrderAPI.Data.Repositories;
-using OrderAPI.Utils.TokenService;
 using Serilog;
 using System.Text;
 
@@ -50,9 +49,6 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
     options.InstanceName = "EFGIntern_";
 });
-
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IAuthServices, AuthServices>();
 
 builder.Services.AddAuthorization();
 var app = builder.Build();
