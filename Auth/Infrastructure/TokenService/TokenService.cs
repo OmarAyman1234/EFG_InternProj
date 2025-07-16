@@ -3,8 +3,9 @@ using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Cryptography;
+using Auth.Application.Interfaces;
 
-namespace Auth.Utils.TokenService
+namespace Auth.Infrastructure.TokenService
 {
     public class TokenService : ITokenService
     {

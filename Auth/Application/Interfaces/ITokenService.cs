@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace Auth.Utils.TokenService
+namespace Auth.Application.Interfaces
 {
     public interface ITokenService
     {

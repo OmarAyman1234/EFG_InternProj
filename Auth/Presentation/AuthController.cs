@@ -1,17 +1,21 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Auth.Data.Repositories;
+using Auth.Application.UseCases;
 using OrderSharedContent;
 
-namespace Auth.Controllers
+namespace Auth.Presentation
 {
     [Route("[controller]")]
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthServices _authServices;
-        public AuthController(IAuthServices authServices) 
-        { 
-            _authServices = authServices;
+        private readonly LoginUserUseCase _loginUserUseCase;
+        private readonly RegisterUserUseCase _registerUserUseCase;
+        private readonly RefreshRouteUseCase _refreshRouteUseCase;
+        public AuthController(LoginUserUseCase loginUserUseCase, RegisterUserUseCase registerUserUseCase, RefreshRouteUseCase refreshRouteUseCase)
+        {
+            _loginUserUseCase = loginUserUseCase;
+            _registerUserUseCase = registerUserUseCase;
+            _refreshRouteUseCase = refreshRouteUseCase;
         }
 
         [HttpPost("login")]
@@ -19,7 +23,7 @@ namespace Auth.Controllers
         {
             try
             {
-                string accessToken = _authServices.LoginUser(lr);
+                string accessToken = _loginUserUseCase.Execute(lr);
                 return Ok(new { accessToken });
             }
             catch (Exception ex)
@@ -39,10 +43,9 @@ namespace Auth.Controllers
         {
             try
             {
-                _authServices.RegisterUser(rr);
+                _registerUserUseCase.Execute(rr);
                 return Created("",$"New user: {rr.Username}");
-
-            } 
+            }
             catch (Exception ex)
             {
                 if (ex.Message.Contains("don't match"))
@@ -51,7 +54,6 @@ namespace Auth.Controllers
                     return Conflict(ex.Message);
 
                 return StatusCode(500, ex.Message);
-                    
             }
         }
 
@@ -60,7 +62,7 @@ namespace Auth.Controllers
         {
             try
             {
-                string newAccessToken = _authServices.Refresh();
+                string newAccessToken = _refreshRouteUseCase.Execute();
                 return Ok(newAccessToken);
             }
             catch (Exception ex)

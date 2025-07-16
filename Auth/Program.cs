@@ -1,6 +1,9 @@
-using Auth.Data.Context;
+using Auth.Infrastructure;
+using Auth.Application.Interfaces;
+using Auth.Application.UseCases;
 using Auth.Data.Repositories;
-using Auth.Utils.TokenService;
+using Auth.Infrastructure.TokenService;
+using Auth.Infrastructure.PasswordHashing;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAuthServices, AuthServices>();
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<LoginUserUseCase>();
+builder.Services.AddScoped<RegisterUserUseCase>();
+builder.Services.AddScoped<RefreshRouteUseCase>();
+builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
 
 var app = builder.Build();
 
