@@ -1,18 +1,16 @@
 using Auth.Application.Interfaces;
-using Auth.Infrastructure;
 using Auth.Domain;
 using OrderSharedContent;
-using OrderSharedContent.Context;
 
 namespace Auth.Application.UseCases
 {
     public class RegisterUserUseCase
     {
-        private readonly AuthContext _context;
+        private readonly IUserRepository _userRepository;
         private readonly IPasswordHasher _passwordHasher;
-        public RegisterUserUseCase(AuthContext context, IPasswordHasher passwordHasher)
+        public RegisterUserUseCase(IUserRepository userRepository, IPasswordHasher passwordHasher)
         {
-            _context = context;
+            _userRepository = userRepository;
             _passwordHasher = passwordHasher;
         }
 
@@ -21,14 +19,14 @@ namespace Auth.Application.UseCases
             if (rr.Password != rr.ConfirmPassword)
                 throw new Exception("Password and confirm password don't match!");
 
-            var user = _context.Users.FirstOrDefault(u => u.UserName == rr.Username);
+            var user = _userRepository.GetByUserName(rr.Username);
             if (user != null)
                 throw new Exception("Username is already taken!");
 
             var hashedPassword = _passwordHasher.HashPassword(rr.Password);
             var newUser = new User(rr.Username, rr.Email, hashedPassword);
-            _context.Users.Add(newUser);
-            _context.SaveChanges();
+            _userRepository.Add(newUser);
+            _userRepository.SaveChanges();
             return true;
         }
     }

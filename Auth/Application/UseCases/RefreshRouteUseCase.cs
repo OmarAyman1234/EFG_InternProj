@@ -1,6 +1,4 @@
-using Auth.Domain;
 using Auth.Application.Interfaces;
-using Auth.Infrastructure;
 using OrderSharedContent.Context;
 using System.Security.Claims;
 
@@ -8,17 +6,17 @@ namespace Auth.Application.UseCases
 {
     public class RefreshRouteUseCase
     {
-        private readonly AuthContext _context;
+        private readonly IUserRepository _userRepository;
         private readonly ITokenService _tokenService;
-        public RefreshRouteUseCase(AuthContext context, ITokenService tokenService)
+        public RefreshRouteUseCase(IUserRepository userRepository, ITokenService tokenService)
         {
-            _context = context;
+            _userRepository = userRepository;
             _tokenService = tokenService;
         }
 
         public string Execute()
         {
-            var user = _context.Users.FirstOrDefault(u => u.UserName == Session.Username);
+            var user = _userRepository.GetByUserName(Session.Username);
 
             if(user == null)
             {

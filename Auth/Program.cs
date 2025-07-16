@@ -1,9 +1,9 @@
 using Auth.Infrastructure;
 using Auth.Application.Interfaces;
 using Auth.Application.UseCases;
-using Auth.Data.Repositories;
 using Auth.Infrastructure.TokenService;
 using Auth.Infrastructure.PasswordHashing;
+using Auth.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +21,7 @@ builder.Services.AddScoped<LoginUserUseCase>();
 builder.Services.AddScoped<RegisterUserUseCase>();
 builder.Services.AddScoped<RefreshRouteUseCase>();
 builder.Services.AddScoped<IPasswordHasher, BCryptPasswordHasher>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 

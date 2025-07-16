@@ -1,6 +1,4 @@
 using Auth.Application.Interfaces;
-using Auth.Infrastructure;
-using Auth.Domain;
 using OrderSharedContent;
 using OrderSharedContent.Context;
 using System.Security.Claims;
@@ -9,19 +7,19 @@ namespace Auth.Application.UseCases
 {
     public class LoginUserUseCase
     {
-        private readonly AuthContext _context;
+        private readonly IUserRepository _userRepository;
         private readonly ITokenService _tokenService;
         private readonly IPasswordHasher _passwordHasher;
-        public LoginUserUseCase(AuthContext context, ITokenService tokenService, IPasswordHasher passwordHasher)
+        public LoginUserUseCase(IUserRepository userRepository, ITokenService tokenService, IPasswordHasher passwordHasher)
         {
-            _context = context;
+            _userRepository = userRepository;
             _tokenService = tokenService;
             _passwordHasher = passwordHasher;
         }
 
         public string Execute(LoginRequest lr)
         {
-            var user = _context.Users.FirstOrDefault(u => u.UserName == lr.Username);
+            var user = _userRepository.GetByUserName(lr.Username);
 
             if (user == null)
             {
@@ -44,7 +42,7 @@ namespace Auth.Application.UseCases
 
             Session.Username = lr.Username;
 
-            _context.SaveChanges();
+            _userRepository.SaveChanges();
 
             return accessToken;
         }

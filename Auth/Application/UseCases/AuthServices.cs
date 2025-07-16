@@ -1,24 +1,15 @@
 ﻿using Auth.Application.Interfaces;
-using Auth.Application.UseCases;
-using Auth.Infrastructure;
-using Auth.Domain;
 using OrderSharedContent;
-using OrderSharedContent.Context;
-using System.Security.Claims;
 
-namespace Auth.Data.Repositories
+namespace Auth.Application.UseCases
 {
     public class AuthServices : IAuthServices
     {
-        private readonly AuthContext _context;
-        private readonly ITokenService _tokenService;
         private readonly LoginUserUseCase _loginUserUseCase;
         private readonly RegisterUserUseCase _registerUserUseCase;
         private readonly RefreshRouteUseCase _refreshRouteUseCase;
-        public AuthServices(AuthContext context, ITokenService tokenService, LoginUserUseCase loginUserUseCase, RegisterUserUseCase registerUserUseCase, RefreshRouteUseCase refreshRouteUseCase)
+        public AuthServices(LoginUserUseCase loginUserUseCase, RegisterUserUseCase registerUserUseCase, RefreshRouteUseCase refreshRouteUseCase)
         {
-            _context = context;
-            _tokenService = tokenService;
             _loginUserUseCase = loginUserUseCase;
             _registerUserUseCase = registerUserUseCase;
             _refreshRouteUseCase = refreshRouteUseCase;
