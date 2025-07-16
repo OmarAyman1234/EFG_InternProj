@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace OrderAPI.Utils.TokenService
+namespace Auth.Utils.TokenService
 {
     public interface ITokenService
     {

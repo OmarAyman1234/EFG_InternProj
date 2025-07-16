@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Security.Cryptography;
 
-namespace OrderAPI.Utils.TokenService
+namespace Auth.Utils.TokenService
 {
     public class TokenService : ITokenService
     {

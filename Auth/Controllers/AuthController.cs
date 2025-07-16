@@ -1,8 +1,10 @@
-﻿using OrderSharedContent;
-using Microsoft.AspNetCore.Mvc;
-using OrderAPI.Data.Repositories;
+﻿using Microsoft.AspNetCore.Mvc;
+using Auth.Data.Repositories;
+using Auth.Models;
+using Auth.Utils.TokenService;
+using OrderSharedContent;
 
-namespace OrderAPI.Controllers
+namespace Auth.Controllers
 {
     [Route("[controller]")]
     [ApiController]

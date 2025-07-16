@@ -1,6 +1,6 @@
 ﻿using OrderSharedContent;
 
-namespace OrderAPI.Data.Repositories
+namespace Auth.Data.Repositories
 {
     public interface IAuthServices
     {

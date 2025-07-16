@@ -1,24 +1,25 @@
-﻿using OrderAPI.Data.Context;
-using OrderAPI.Models;
-using OrderAPI.Utils.TokenService;
+﻿using Auth.Models;
+using Auth.Utils.TokenService;
+using Auth.Data.Context;
 using OrderSharedContent;
 using OrderSharedContent.Context;
 using System.Security.Claims;
 
-namespace OrderAPI.Data.Repositories
+namespace Auth.Data.Repositories
 {
     public class AuthServices : IAuthServices
     {
-        static OrderContext context = new OrderContext();
+        private readonly AuthContext _context;
         private readonly ITokenService _tokenService;
-        public AuthServices(ITokenService tokenService)
+        public AuthServices(AuthContext context, ITokenService tokenService)
         {
+            _context = context;
             _tokenService = tokenService;
         }
 
         public string LoginUser(LoginRequest lr)
         {
-            var user = context.Users.FirstOrDefault(u => u.UserName == lr.Username);
+            var user = _context.Users.FirstOrDefault(u => u.UserName == lr.Username);
 
             if (user == null)
             {
@@ -41,7 +42,7 @@ namespace OrderAPI.Data.Repositories
 
             Session.Username = lr.Username;
 
-            context.SaveChanges();
+            _context.SaveChanges();
 
 
             return accessToken;
@@ -51,18 +52,18 @@ namespace OrderAPI.Data.Repositories
             if (rr.Password != rr.ConfirmPassword)
                 throw new Exception("Password and confirm password don't match!");
 
-            var user = context.Users.FirstOrDefault(u => u.UserName == rr.Username);
+            var user = _context.Users.FirstOrDefault(u => u.UserName == rr.Username);
             if (user != null)
                 throw new Exception("Username is already taken!");
 
             var newUser = new User(rr.Username, rr.Email, rr.Password);
-            context.Users.Add(newUser);
-            context.SaveChanges();
+            _context.Users.Add(newUser);
+            _context.SaveChanges();
             return true;
         }
         public string Refresh()
         {
-            var user = context.Users.FirstOrDefault(u => u.UserName == Session.Username);
+            var user = _context.Users.FirstOrDefault(u => u.UserName == Session.Username);
 
             if(user == null)
             {

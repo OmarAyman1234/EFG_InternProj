@@ -1,4 +1,4 @@
-﻿namespace OrderAPI.Models
+﻿namespace Auth.Models
 {
     public class User
     {
