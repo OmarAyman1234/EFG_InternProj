@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Auth.Data.Repositories;
-using Auth.Models;
-using Auth.Utils.TokenService;
 using OrderSharedContent;
 
 namespace Auth.Controllers

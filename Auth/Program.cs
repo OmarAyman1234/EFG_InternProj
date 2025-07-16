@@ -1,12 +1,11 @@
 using Auth.Data.Context;
-using Microsoft.EntityFrameworkCore;
 using Auth.Data.Repositories;
 using Auth.Utils.TokenService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add AuthContext to DI
-builder.Services.AddDbContext<Auth.Data.Context.AuthContext>();
+builder.Services.AddDbContext<AuthContext>();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -30,8 +29,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
