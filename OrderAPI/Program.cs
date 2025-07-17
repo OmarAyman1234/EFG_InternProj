@@ -51,6 +51,9 @@ builder.Services.AddScoped<OrderAPI.Application.UseCases.OrderUseCase.DeleteOrde
 builder.Services.AddScoped<OrderAPI.Application.UseCases.OrderUseCase.OrderService>();
 builder.Services.AddScoped<OrderAPI.Application.Interfaces.IOrderRepository, OrderAPI.Infrastructure.Repositories.OrderRepository>();
 
+// Product services injection
+builder.Services.AddScoped<OrderAPI.Application.Interfaces.IProductRepository,  ProductRepository>();
+
 // Register infrastructure implementations
 builder.Services.AddScoped<OrderAPI.Application.Interfaces.ICachingService, OrderAPI.Infrastructure.Services.RedisService>();
 builder.Services.AddScoped<OrderAPI.Application.Interfaces.IMessageBroker, OrderAPI.Infrastructure.Services.RabbitMQService>();
