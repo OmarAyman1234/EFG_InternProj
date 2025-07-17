@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using OrderAPI.Data.Context;
+using OrderAPI.Infrastructure.Context;
 
 #nullable disable
 
-namespace OrderAPI.Migrations
+namespace OrderAPI.Infrastructure.Migrations
 {
     [DbContext(typeof(OrderContext))]
     [Migration("20250704133659_AddingUsers")]

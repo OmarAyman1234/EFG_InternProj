@@ -1,7 +1,7 @@
-﻿using OrderAPI.Models;
+using OrderAPI.Domain;
 using Microsoft.EntityFrameworkCore;
 
-namespace OrderAPI.Data.Context
+namespace OrderAPI.Infrastructure.Context
 {
     public class OrderContext : DbContext
     {
@@ -12,4 +12,4 @@ namespace OrderAPI.Data.Context
             optionsBuilder.UseSqlServer(@"Data Source=OMARSLAPTOP\SQLEXPRESS; Initial Catalog=Trade;Trusted_Connection=True;TrustServerCertificate=True;");
         }
     }
-}
+} 

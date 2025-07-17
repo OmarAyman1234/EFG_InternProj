@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-namespace OrderAPI.Models
+namespace OrderAPI.Domain
 {
     public class Order
     {

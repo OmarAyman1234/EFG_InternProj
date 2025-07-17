@@ -1,36 +1,37 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using OrderAPI.Data.Repositories;
+using Microsoft.AspNetCore.Mvc;
 using OrderSharedContent;
-using OrderAPI.RabbitMQ;
 using Microsoft.AspNetCore.Authorization;
+using OrderAPI.Application.UseCases;
+using OrderAPI.Application.Interfaces;
+using OrderAPI.Domain;
 
-namespace OrderAPI.Controllers
+namespace OrderAPI.Presentation
 {
     [Route("api/[controller]")]
     [ApiController]
     public class OrdersController : ControllerBase
     {
-        private readonly OrderServices _orderServices;
+        private readonly OrderService _orderService;
+        private readonly IMessageBroker _messageBroker;
 
-        public OrdersController(OrderServices orderServices)
+        public OrdersController(OrderService orderService, IMessageBroker messageBroker)
         {
-            _orderServices = orderServices;
+            _orderService = orderService;
+            _messageBroker = messageBroker;
         }
-
 
         // GET: api/Orders
         [Authorize]
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<OrderDto>>> Get()
+        public async Task<ActionResult<IEnumerable<Order>>> Get()
         {
             try
             {
-                var orders = await _orderServices.GetOrders();
+                var orders = await _orderService.GetAllAsync();
                 return Ok(orders);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-                // Optional: log the error
                 Console.WriteLine($"Error in Get: {ex.Message}");
                 return StatusCode(500, ex.Message);
             }
@@ -38,14 +39,13 @@ namespace OrderAPI.Controllers
 
         // GET api/Orders/:id
         [HttpGet("{id}")]
-        public ActionResult<OrderDto> Get(int id)
+        public async Task<ActionResult<Order>> Get(int id)
         {
-            var order = _orderServices.GetOrderById(id);
+            var order = await _orderService.GetByIdAsync(id);
             if (order != null)
             {
                 return Ok(order);
             }
-
             return NotFound($"Order with id {id} not found.");
         }
 
@@ -56,36 +56,36 @@ namespace OrderAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var newOrder = _orderServices.CreateOrder(order);
-            if(newOrder != null)
+            var newOrder = await _orderService.CreateAsync(order);
+            if (newOrder != null)
             {
-                await RabbitMQProducer.Send(newOrder, "post.orders");
+                await _messageBroker.Publish(newOrder, "post.orders");
                 return Created($"/api/Orders/{newOrder.Id}", newOrder);
             }
-
             return BadRequest("Check your values and try again.");
         }
 
         // PUT api/Orders/:id
         [HttpPut("{id}")]
-        public ActionResult<OrderDto> Put(int id, EditOrderRequest order)
+        public async Task<ActionResult<Order>> Put(int id, EditOrderRequest order)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (_orderServices.EditOrder(id, order) != null)
+            var editedOrder = await _orderService.EditAsync(id, order);
+            if (editedOrder != null)
             {
-                return Ok(_orderServices.GetOrderById(id));
+                return Ok(editedOrder);
             }
-
             return NotFound($"Order with id {id} not found");
         }
 
         // DELETE api/Orders/:id
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            if (_orderServices.DeleteOrder(id) == true)
+            var deleted = await _orderService.DeleteAsync(id);
+            if (deleted)
             {
                 return Ok();
             }
@@ -95,4 +95,4 @@ namespace OrderAPI.Controllers
             }
         }
     }
-}
+} 

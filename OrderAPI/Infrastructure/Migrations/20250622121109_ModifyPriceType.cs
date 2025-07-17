@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace OrderAPI.Migrations
+namespace OrderAPI.Infrastructure.Migrations
 {
     /// <inheritdoc />
     public partial class ModifyPriceType : Migration

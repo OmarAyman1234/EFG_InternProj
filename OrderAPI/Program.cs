@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using OrderAPI.Data.Context;
-using OrderAPI.Data.Repositories;
+using OrderAPI.Infrastructure.Context;
+using OrderAPI.Infrastructure.Repositories;
 using Serilog;
 using System.Text;
 
@@ -42,7 +42,18 @@ builder.Services.AddAuthentication("Bearer")
     });
 
 builder.Services.AddScoped<OrderContext>();
-builder.Services.AddScoped<OrderServices>();
+// builder.Services.AddScoped<OrderServices>(); // Remove old service registration
+builder.Services.AddScoped<OrderAPI.Application.UseCases.GetAllOrdersUseCase>();
+builder.Services.AddScoped<OrderAPI.Application.UseCases.GetOrderByIdUseCase>();
+builder.Services.AddScoped<OrderAPI.Application.UseCases.CreateOrderUseCase>();
+builder.Services.AddScoped<OrderAPI.Application.UseCases.EditOrderUseCase>();
+builder.Services.AddScoped<OrderAPI.Application.UseCases.DeleteOrderUseCase>();
+builder.Services.AddScoped<OrderAPI.Application.UseCases.OrderService>();
+builder.Services.AddScoped<OrderAPI.Application.Interfaces.IOrderRepository, OrderAPI.Infrastructure.Repositories.OrderRepository>();
+
+// Register infrastructure implementations
+builder.Services.AddScoped<OrderAPI.Application.Interfaces.ICachingService, OrderAPI.Infrastructure.Services.RedisService>();
+builder.Services.AddScoped<OrderAPI.Application.Interfaces.IMessageBroker, OrderAPI.Infrastructure.Services.RabbitMQService>();
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
@@ -51,6 +62,15 @@ builder.Services.AddStackExchangeRedisCache(options =>
 });
 
 builder.Services.AddAuthorization();
+builder.Services.AddSingleton<RabbitMQ.Client.ConnectionFactory>(sp =>
+{
+    // You can load these from configuration if needed
+    return new RabbitMQ.Client.ConnectionFactory
+    {
+        HostName = "localhost"
+        // Add more settings as needed (UserName, Password, etc.)
+    };
+});
 var app = builder.Build();
 
 // Middleware
