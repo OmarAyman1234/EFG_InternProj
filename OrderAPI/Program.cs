@@ -52,6 +52,8 @@ builder.Services.AddScoped<OrderAPI.Application.UseCases.OrderUseCase.OrderServi
 builder.Services.AddScoped<OrderAPI.Application.Interfaces.IOrderRepository, OrderAPI.Infrastructure.Repositories.OrderRepository>();
 
 // Product services injection
+builder.Services.AddScoped<OrderAPI.Application.UseCases.ProductUseCase.GetAllProductsUseCase>();
+builder.Services.AddScoped<OrderAPI.Application.UseCases.ProductUseCase.ProductService>();
 builder.Services.AddScoped<OrderAPI.Application.Interfaces.IProductRepository,  ProductRepository>();
 
 // Register infrastructure implementations

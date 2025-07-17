@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
 using OrderAPI.Application.Interfaces;
 using OrderAPI.Domain;
 using OrderAPI.Infrastructure.Context;
