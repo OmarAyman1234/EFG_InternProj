@@ -1,6 +1,6 @@
 using OrderAPI.Application.Interfaces;
 
-namespace OrderAPI.Application.UseCases
+namespace OrderAPI.Application.UseCases.OrderUseCase
 {
     public class DeleteOrderUseCase
     {

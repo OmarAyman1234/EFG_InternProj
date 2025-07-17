@@ -43,12 +43,12 @@ builder.Services.AddAuthentication("Bearer")
 
 builder.Services.AddScoped<OrderContext>();
 // builder.Services.AddScoped<OrderServices>(); // Remove old service registration
-builder.Services.AddScoped<OrderAPI.Application.UseCases.GetAllOrdersUseCase>();
-builder.Services.AddScoped<OrderAPI.Application.UseCases.GetOrderByIdUseCase>();
-builder.Services.AddScoped<OrderAPI.Application.UseCases.CreateOrderUseCase>();
-builder.Services.AddScoped<OrderAPI.Application.UseCases.EditOrderUseCase>();
-builder.Services.AddScoped<OrderAPI.Application.UseCases.DeleteOrderUseCase>();
-builder.Services.AddScoped<OrderAPI.Application.UseCases.OrderService>();
+builder.Services.AddScoped<OrderAPI.Application.UseCases.OrderUseCase.GetAllOrdersUseCase>();
+builder.Services.AddScoped<OrderAPI.Application.UseCases.OrderUseCase.GetOrderByIdUseCase>();
+builder.Services.AddScoped<OrderAPI.Application.UseCases.OrderUseCase.CreateOrderUseCase>();
+builder.Services.AddScoped<OrderAPI.Application.UseCases.OrderUseCase.EditOrderUseCase>();
+builder.Services.AddScoped<OrderAPI.Application.UseCases.OrderUseCase.DeleteOrderUseCase>();
+builder.Services.AddScoped<OrderAPI.Application.UseCases.OrderUseCase.OrderService>();
 builder.Services.AddScoped<OrderAPI.Application.Interfaces.IOrderRepository, OrderAPI.Infrastructure.Repositories.OrderRepository>();
 
 // Register infrastructure implementations

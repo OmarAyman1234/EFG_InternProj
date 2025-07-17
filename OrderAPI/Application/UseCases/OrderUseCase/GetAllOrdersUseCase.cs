@@ -2,7 +2,7 @@ using OrderAPI.Application.Interfaces;
 using OrderSharedContent;
 using System.Text.Json;
 
-namespace OrderAPI.Application.UseCases
+namespace OrderAPI.Application.UseCases.OrderUseCase
 {
     public class GetAllOrdersUseCase
     {

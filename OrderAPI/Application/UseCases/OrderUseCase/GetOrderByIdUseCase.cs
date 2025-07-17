@@ -1,7 +1,7 @@
 using OrderAPI.Application.Interfaces;
 using OrderAPI.Domain;
 
-namespace OrderAPI.Application.UseCases
+namespace OrderAPI.Application.UseCases.OrderUseCase
 {
     public class GetOrderByIdUseCase
     {

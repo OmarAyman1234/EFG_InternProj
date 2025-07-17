@@ -2,7 +2,7 @@ using OrderAPI.Application.Interfaces;
 using OrderAPI.Domain;
 using OrderSharedContent;
 
-namespace OrderAPI.Application.UseCases
+namespace OrderAPI.Application.UseCases.OrderUseCase
 {
     public class CreateOrderUseCase
     {

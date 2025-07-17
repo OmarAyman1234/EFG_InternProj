@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using OrderSharedContent;
 using Microsoft.AspNetCore.Authorization;
-using OrderAPI.Application.UseCases;
+using OrderAPI.Application.UseCases.OrderUseCase;
 using OrderAPI.Application.Interfaces;
 using OrderAPI.Domain;
 
