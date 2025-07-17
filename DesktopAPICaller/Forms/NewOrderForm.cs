@@ -50,5 +50,10 @@ namespace DesktopAPICaller.Forms
                 MessageBox.Show($"Error in creating an order: {ex.Message}");
             }
         }
+
+        private void NewOrderForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
