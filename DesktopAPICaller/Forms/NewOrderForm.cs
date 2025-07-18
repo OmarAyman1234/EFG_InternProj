@@ -1,4 +1,5 @@
-﻿using OrderSharedContent;
+﻿using OrderAPI.Domain;
+using OrderSharedContent;
 using OrderSharedContent.Context;
 using System.Text.Json;
 
@@ -17,16 +18,16 @@ namespace DesktopAPICaller.Forms
             try
             {
 
-                if (string.IsNullOrWhiteSpace(productTextBox.Text) ||
-                    string.IsNullOrWhiteSpace(priceTextBox.Text) ||
+                if (string.IsNullOrWhiteSpace(productsComboBox.Text) ||
+                    string.IsNullOrWhiteSpace(priceLabelValue.Text) ||
                     string.IsNullOrWhiteSpace(quantityTextBox.Text) ||
                     string.IsNullOrWhiteSpace(directionComboBox.Text))
                 {
                     throw new ArgumentNullException("Please fill in all fields.");
                 }
 
-                string product = productTextBox.Text.Trim();
-                decimal price = decimal.Parse(priceTextBox.Text.Trim());
+                string product = productsComboBox.Text.Trim();
+                decimal price = decimal.Parse(priceLabelValue.Text.Trim());
                 int quantity = int.Parse(quantityTextBox.Text.Trim());
                 string direction = directionComboBox.Text.Trim();
 
@@ -51,9 +52,49 @@ namespace DesktopAPICaller.Forms
             }
         }
 
-        private void NewOrderForm_Load(object sender, EventArgs e)
+        private async void NewOrderForm_Load(object sender, EventArgs e)
         {
+            productsComboBox.Text = "Loading Products...";
 
+            var response = await _httpClient.GetAsync("https://localhost:7089/api/Products");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                string error = await response.Content.ReadAsStringAsync();
+                MessageBox.Show($"Error in fetching products: {response.StatusCode}\nDetails: {error}");
+                return;
+            }
+
+            var json = await response.Content.ReadAsStringAsync();
+            var products = JsonSerializer.Deserialize<IEnumerable<Product>>(json, new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            });
+
+            productsComboBox.DataSource = products;
+            productsComboBox.DisplayMember = "Name";
+            productsComboBox.ValueMember = "Id";
+
+            productsComboBox.SelectedIndex = 0;
+
+            if (productsComboBox.SelectedItem is Product selectedItem)
+            {
+                int id = selectedItem.Id;
+                decimal price = selectedItem.Price;
+
+                priceLabelValue.Text = price.ToString("0.00");
+            }
+        }
+
+        private void productsComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(productsComboBox.SelectedItem is Product selectedItem)
+            {
+                int id = selectedItem.Id;
+                decimal price = selectedItem.Price;
+
+                priceLabelValue.Text = price.ToString("0.00");
+            }
         }
     }
 }
