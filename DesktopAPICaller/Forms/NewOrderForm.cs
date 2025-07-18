@@ -36,7 +36,6 @@ namespace DesktopAPICaller.Forms
                 var json = JsonSerializer.Serialize(newOrder);
                 var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
-                _httpClient.DefaultRequestHeaders.Remove("X-Username");
                 _httpClient.DefaultRequestHeaders.Add("X-Username", Session.Username);
 
                 var response = await _httpClient.PostAsync("https://localhost:7089/api/Orders", content);
@@ -44,7 +43,7 @@ namespace DesktopAPICaller.Forms
 
                 string responseBody = await response.Content.ReadAsStringAsync();
                 var createdOrder = JsonSerializer.Deserialize<OrderDto>(responseBody);
-                MessageBox.Show($"{createdOrder.Id}: {createdOrder.Product}");
+                MessageBox.Show($"Order Created!");
             }
             catch (Exception ex)
             {
