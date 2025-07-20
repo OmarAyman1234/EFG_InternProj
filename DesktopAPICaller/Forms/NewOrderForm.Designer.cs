@@ -129,9 +129,8 @@
             priceLabelValue.AutoSize = true;
             priceLabelValue.Location = new Point(364, 149);
             priceLabelValue.Name = "priceLabelValue";
-            priceLabelValue.Size = new Size(24, 25);
+            priceLabelValue.Size = new Size(0, 25);
             priceLabelValue.TabIndex = 13;
-            priceLabelValue.Text = "...";
             // 
             // NewOrderForm
             // 

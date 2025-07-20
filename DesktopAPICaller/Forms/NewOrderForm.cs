@@ -23,7 +23,7 @@ namespace DesktopAPICaller.Forms
                     string.IsNullOrWhiteSpace(quantityTextBox.Text) ||
                     string.IsNullOrWhiteSpace(directionComboBox.Text))
                 {
-                    throw new ArgumentNullException("Please fill in all fields.");
+                    throw new ArgumentNullException("All fields should not be empty!");
                 }
 
                 string product = productsComboBox.Text.Trim();
