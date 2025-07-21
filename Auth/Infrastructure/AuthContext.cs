@@ -9,7 +9,7 @@ namespace Auth.Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=OMARSLAPTOP\SQLEXPRESS; Initial Catalog=Trade;Trusted_Connection=True;TrustServerCertificate=True;");
+            optionsBuilder.UseSqlServer(@"Data Source=host.docker.internal;Initial Catalog=Trade;User Id=efg-trade;Password=omar1234;TrustServerCertificate=true;");
         }
     }
 } 
