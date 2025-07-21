@@ -28,7 +28,7 @@ namespace DesktopAPICaller.AuthForms
             var json = JsonSerializer.Serialize(newLogin);
             var content = new StringContent(json, System.Text.Encoding.UTF8, "application/json");
 
-            var response = await _httpClient.PostAsync("https://localhost:7087/Auth/login", content);
+            var response = await _httpClient.PostAsync("http://localhost:7087/Auth/login", content);
             var responseBody = await response.Content.ReadAsStringAsync();
 
             if (response.IsSuccessStatusCode)

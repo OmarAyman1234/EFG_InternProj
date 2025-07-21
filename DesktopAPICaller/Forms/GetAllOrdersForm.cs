@@ -32,7 +32,7 @@ namespace DesktopAPICaller.Forms
                     // unauthorized:
 
                     //try refresh
-                    var refreshResponse = await _httpClient.PostAsync("https://localhost:7087/Auth/refresh", null);
+                    var refreshResponse = await _httpClient.PostAsync("http://localhost:7087/Auth/refresh", null);
                     string newAccessToken = await refreshResponse.Content.ReadAsStringAsync();
 
                     // add the access token after refresh
