@@ -17,5 +17,15 @@ namespace OrderAPI.Infrastructure.Repositories
         {
             return await _orderContext.Products.ToListAsync();
         }
+
+        public async Task AddProduct(Product product)
+        {
+            await _orderContext.Products.AddAsync(product);
+        }
+
+        public async Task SaveChangesAsync()
+        {
+            await _orderContext.SaveChangesAsync();
+        }
     }
 }
