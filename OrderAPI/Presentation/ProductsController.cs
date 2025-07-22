@@ -26,11 +26,18 @@ namespace OrderAPI.Presentation
                 var products = await _productService.GetAllAsync();
                 return Ok(products);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($"Error in get all prod: ex.Message");
                 return StatusCode(500, ex.Message);
             }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<Product>> Post(AddProductRequest addProductRequest)
+        {
+            var newProduct = await _productService.AddProduct(addProductRequest);
+            return Ok(newProduct);
         }
     }
 }
