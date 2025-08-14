@@ -28,11 +28,5 @@ namespace DesktopAPICaller
             var form = new NewOrderForm();
             form.Show();
         }
-
-        private void trackOrdersButton_Click(object sender, EventArgs e)
-        {
-            var form = new OrdersTrackerForm();
-            form.Show();
-        }
     }
 }

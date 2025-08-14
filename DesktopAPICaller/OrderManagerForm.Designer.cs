@@ -32,7 +32,6 @@
             getSpecificOrderButton = new Button();
             newOrderButton = new Button();
             greetLabel = new Label();
-            trackOrdersButton = new Button();
             SuspendLayout();
             // 
             // getAllOrdersButton
@@ -76,22 +75,11 @@
             greetLabel.TabIndex = 5;
             greetLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
-            // trackOrdersButton
-            // 
-            trackOrdersButton.Location = new Point(168, 265);
-            trackOrdersButton.Name = "trackOrdersButton";
-            trackOrdersButton.Size = new Size(237, 50);
-            trackOrdersButton.TabIndex = 6;
-            trackOrdersButton.Text = "Track orders";
-            trackOrdersButton.UseVisualStyleBackColor = true;
-            trackOrdersButton.Click += trackOrdersButton_Click;
-            // 
             // orderManager
             // 
             AutoScaleDimensions = new SizeF(13F, 32F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(575, 334);
-            Controls.Add(trackOrdersButton);
             Controls.Add(greetLabel);
             Controls.Add(newOrderButton);
             Controls.Add(getSpecificOrderButton);
@@ -109,6 +97,5 @@
         private Button getSpecificOrderButton;
         private Button newOrderButton;
         private Label greetLabel;
-        private Button trackOrdersButton;
     }
 }
