@@ -1,3 +1,4 @@
+using Azure.Identity;
 using DesktopAPICaller.AuthForms;
 
 namespace DesktopAPICaller
@@ -10,6 +11,20 @@ namespace DesktopAPICaller
         [STAThread]
         static void Main()
         {
+            // Auth warm up
+            Task.Run(async () =>
+            {
+                using var client = new HttpClient();
+                try
+                {
+                    await client.PostAsync("http://localhost:7087/Auth/refresh", null);
+                }
+                catch
+                {
+                    // Ignore warm-up errors
+                }
+            });
+
             // To customize application configuration such as set high DPI settings or default font,
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
